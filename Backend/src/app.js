@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use("/api/auth", authRouter)
-
+app.use("/api/search")
 app.get('/', (req, res) => {
   res.send("💨server is running ")
 })
