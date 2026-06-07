@@ -1,13 +1,8 @@
 import React from 'react'
-
+import Login from './UI/pages/login'
 function App() {
-  return (
-    <div className="flex bg-black items-center justify-center h-screen">
-       <h1 className="text-3xl text-blue-500 font-bold ">
-      Hello world!
-    </h1>
-    </div>
-  )
+  return <Login />
 }
- 
+
 export default App
+
