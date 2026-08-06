@@ -2,20 +2,22 @@ import express from 'express';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 import db from "../config/dbconfig.js";
-import usermodel from "../model/usermodel.js"
+import usermodel from "../model/user.model.js"
 
 
 export const userregister = async (req, res) => {
 
-      const { username, email, password } = req.body;
+    
 
-      if (!username || !email || !password) {
-            return res.status(400).json({ message: "All fields are required" })
-      }
-
-      const isuser = await usermodel.findOne({ email })
+      const isuser = await usermodel.findOne(
+            $or[ { username: req.body.username }, { email: req.body.email } ])
       if (isuser) {
-            return res.status(400).json({ message: "user already exists" })
+            return res.status(400).json({ 
+                  
+                  success: false,
+                  message: "user already exists",
+                  err: "username or email already exists"
+            })
       }
 
       const hashpassword = await bcrypt.hash(password, 10)
