@@ -1,12 +1,27 @@
-import { body, validationResult } from "express-validator";
+import { body, validationResult, matchedData } from "express-validator";
+
+export function validetor(req,res,next){
+const errors = validationResult(req);
+
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        errors: errors.array()
+      });
+    }
+    req.validatedData = matchedData(req);
+    next();
+    }
+
 
 export const registerValidation = [
-  body("name")
+  body("username") // 'name' ki jagah 'username' karein
     .trim()
     .notEmpty()
-    .withMessage("Name is required")
+    .withMessage("Username is required")
     .isLength({ min: 3 })
-    .withMessage("Name must be at least 3 characters"),
+    .withMessage("Username must be at least 3 characters"),
 
   body("email")
     .trim()
@@ -26,16 +41,9 @@ export const registerValidation = [
     .matches(/[0-9]/)
     .withMessage("Password must contain at least one number"),
 
-  (req, res, next) => {
-    const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        success: false,
-        errors: errors.array()
-      });
-    }
 
-    next();
-  }
-];
+]
+
+
+  
