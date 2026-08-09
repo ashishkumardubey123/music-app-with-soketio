@@ -40,10 +40,23 @@ export const registerValidation = [
     .withMessage("Password must contain at least one uppercase letter")
     .matches(/[0-9]/)
     .withMessage("Password must contain at least one number"),
-
-
-
 ]
+
+export const loginValidation = [
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email is required")
+    .isEmail()
+    .withMessage("Please enter a valid email")
+    .normalizeEmail(),
+
+  body("password")
+    .trim()
+    .notEmpty()
+    .withMessage("Password is required")
+]
+
 
 
   
