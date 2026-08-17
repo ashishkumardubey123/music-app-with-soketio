@@ -9,7 +9,7 @@ const model = new ChatGoogleGenerativeAI({
 export async function testAi() {
   try {
     const response = await model.invoke(
-      " if you are able to write a code then crete factorial number code in javascript" 
+     `Tell me about today's special day. `
 
     );
 

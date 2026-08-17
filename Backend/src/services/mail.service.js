@@ -29,7 +29,6 @@ export async function sendeamil ({to, subject, html, }){
     from: process.env.GOOGLE_USER,
     to: to,
     subject: subject,
-    
     html: html,
   };
   try {
