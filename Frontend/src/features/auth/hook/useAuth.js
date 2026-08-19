@@ -20,5 +20,38 @@ export function useAuth(){
       dispatch(setLoading(false))
     }
   }
+   
+
+async function handelLogin({email , Password }){
+  try{
+    dispatch(setLoading(true))
+    const data = await Login({email, Password})
+    dispatch(setUser(data.user))
+  }catch(ERROR){
+     dispatch(setError(ERROR.responce.data.message|| "login Faild"))
+  }finally{
+    dispatch(setLoading(false))
+  }
+}
+
+
+async function handelGetme(){
+  try{
+ dispatch(setLoading(true))
+ const data = await Getuser()
+ dispatch(setUser(data.user))
+    
+  }catch(error){
+    dispatch(setError(error.responce.data.message || "User not found. Something went wrong. "))
+  }finally{
+    dispatch(setLoading(false))
+  }
+}
+
+return{
+  handleregister,
+  handelLogin,
+  handelGetme
+}
 
 }
