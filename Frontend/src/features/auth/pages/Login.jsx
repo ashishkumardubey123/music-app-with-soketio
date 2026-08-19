@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Link } from "react-router";
+import { useAuth } from "../hook/useAuth";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+
 
 function OrbitMark() {
   return (
@@ -73,25 +78,68 @@ function Field({ icon: Icon, label, type = "text", placeholder, name, autoComple
 }
 
 export default function Login() {
+ 
+
+  const navigate = useNavigate()
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    identifier: "",
+    email: "",
     password: "",
-    rememberMe: false,
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
-  const handleSubmit = () => {
-    // Wire this up to your backend call (e.g. axios.post('/api/login', formData))
-    console.log("Login submitted:", formData);
+  const user = useSelector((state) => state.auth.user)
+  const loading = useSelector((state) => state.auth.loading)
+  const {handelLogin} = useAuth()
+  const handleChange = (e) => {
+  const { name, value } = e.target;
+
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
+
+  const handleSubmit = async (e) => {
+
+  
+
+    e.preventDefault();
+
+    
+     try {
+       const payload = {
+      email: formData.email,
+      password: formData.password, 
+     }
+
+      const data = await handelLogin(payload)
+       
+    console.log(data)
+     
+    
+     if(data.success== true) {
+            toast.success("Login successful!");
+        navigate("/")
+     
+    }
+       
+     }catch (err) {
+      
+      
+      toast.error(err.message||"Login failed!" );
+     }
+    
+       
+
+        
+   
   };
+      
+  if(!loading && user){
+    return navigate("/")
+  }
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-neutral-950 text-white">
@@ -113,7 +161,7 @@ export default function Login() {
             </p>
           </div>
           <p className="text-xs text-neutral-600">
-            © {new Date().getFullYear()} Perplexity AI — every answer, sourced.
+            © {new Date().getFullYear()} Perplexity AI  every answer, sourced.
           </p>
         </div>
 
@@ -132,10 +180,10 @@ export default function Login() {
                 <Field
                   icon={Mail}
                   label="Email or username"
-                  name="identifier"
+                  name="email"
                   autoComplete="username"
                   placeholder="you@example.com or username"
-                  value={formData.identifier}
+                  value={formData.email}
                   onChange={handleChange}
                 />
                 <Field
@@ -153,17 +201,8 @@ export default function Login() {
               </div>
 
               <div className="mt-4 flex items-center justify-between text-sm">
-                <label className="flex items-center gap-2 text-neutral-400">
-                  <input
-                    type="checkbox"
-                    name="rememberMe"
-                    checked={formData.rememberMe}
-                    onChange={handleChange}
-                    className="h-3.5 w-3.5 rounded accent-teal-400"
-                  />
-                  Keep me signed in
-                </label>
-                <a href="#" className="text-teal-300 transition-colors hover:text-teal-200">
+               
+                <a href="#" className="text-teal-300 transition-colors m-auto hover:text-teal-200">
                   Forgot password?
                 </a>
               </div>
