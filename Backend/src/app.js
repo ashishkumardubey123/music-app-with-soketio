@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser"
 import authRouter from "./router/auth.router.js"
 import morgan from "morgan";
+import chatRouter from "./router/chat.router.js";
 dotenv.config();
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(
 
 
 app.use("/api/auth", authRouter)
+app.use("/api/chats", chatRouter)
 
 app.get('/', (req, res) => {
   res.send("💨server is running ")
