@@ -40,4 +40,43 @@ export async function sendMessage(req, res) {
     Aimessage,
 
   });
+} 
+
+export async function getchat(req,res){
+   const user = req.user.id
+console.log(user)
+   
+   const allchat = await chatModel.find({ user: user })
+
+   console.log(allchat)
+   res.status(200).json({
+    success: true,
+    message: "All chat are successfully received. ",
+    allchat
+   })
+
+}
+
+export async function getmessages(req,res) {
+   const {chatid} = req.params;
+
+     const chat = chatModel.findOne({
+        _id: chatid,
+        user:req.user.id
+     })
+  if(!chat){
+    return res.stetus(404).json({
+       success:false,
+       message: "Chat not found. "
+    })
+  }
+
+  const messages = await messageModel.findOne({chat:chatid})
+
+   res.stetus(200).json({
+    success:true,
+    message: " all messages are found. ",
+    messages
+   })
+
 }

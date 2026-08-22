@@ -322,7 +322,7 @@ await sendeamil({
 
 
       return res.status(201).json({
-            message: "user registered successfully",
+            message: "Please verify your email address first. ",
            success: true,
             
        
