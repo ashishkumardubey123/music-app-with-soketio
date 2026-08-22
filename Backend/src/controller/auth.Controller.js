@@ -527,7 +527,7 @@ export const userlogin = async (req,res) => {
       email: user.email,
     },
     process.env.JWT_SECRET, 
-     {expiresIn: "1d"}
+  
     )
       
       res.cookie("token", token, {

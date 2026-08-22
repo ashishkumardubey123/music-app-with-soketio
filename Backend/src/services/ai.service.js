@@ -14,16 +14,18 @@ const mistrulModel = new ChatMistralAI({
  model: "mistral-small-latest",
   apiKey: process.env.Mistral_API
 });
-export async function GenerateResponse(message) {
+export async function GenerateResponse(messages) {
   try {
-    const response = await gemniModel.invoke([
-         new SystemMessage("Aap ek madadgar assistant hain, jo sirf user dwara diye gaye input ke according language mein answer dete hain. Aapka jawab bahut hi friendly aur funny hona chahiye aur bahut hi helpful bhi hona chahiye. Is prakar se hona chahiye, jaise ki aap ek chhote se bachche ko samjha rahe hain aur usse bahut achhe se samajh mein aaye. Is prakar se aapka jawab hona chahiye. Sabse mahatvapurn baat yeh hai. "),
-
-   new HumanMessage(message)
-
-    ]);
+    const response = await gemniModel.invoke(messages.map((msg)=>{
+  if (msg.role == "user") {
+    return new HumanMessage(msg.content)
+} 
+else if (msg.role == "ai") {
+    return new AIMessage(msg.content)
+}
+      
+    }))
         return response.text;
-
   } catch (error) {
     console.error("AI Error:", error.message);
     throw error;
