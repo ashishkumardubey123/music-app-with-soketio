@@ -24,6 +24,8 @@ transporter.verify((error, success) => {
   }
 });
 
+// 
+
 export async function sendeamil ({to, subject, html, }){
   const mailOptions = {
     from: process.env.GOOGLE_USER,

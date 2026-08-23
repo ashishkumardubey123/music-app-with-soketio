@@ -60,23 +60,57 @@ console.log(user)
 export async function getmessages(req,res) {
    const {chatid} = req.params;
 
-     const chat = chatModel.findOne({
+   console.log(chatid)
+
+     const chat = await chatModel.findOne({
         _id: chatid,
         user:req.user.id
      })
-  if(!chat){
-    return res.stetus(404).json({
+       if(!chat){
+    return res.status(404).json({
        success:false,
        message: "Chat not found. "
     })
   }
 
-  const messages = await messageModel.findOne({chat:chatid})
 
-   res.stetus(200).json({
+  const messages = await messageModel.find({chatId:chatid})
+
+   res.status(200).json({
     success:true,
     message: " all messages are found. ",
     messages
    })
 
 }
+export async function deleteMessages(req,res) {
+  const  {chatid} = req.params;
+
+    const chat = await chatModel.findOneAndDelete({
+        _id: chatid,
+        user:req.user.id
+     })
+
+      if(!chat){
+    return  res.status(404).json({
+       success:false,
+       message: "Chat not found. "
+    })
+  }
+
+     
+await messageModel.deleteMany({
+  chatId:chatid
+})
+
+ 
+
+
+   res.status(200).json({
+    success:true,
+    message: " Chat deleted successfully. ",
+    
+   })
+
+}
+
