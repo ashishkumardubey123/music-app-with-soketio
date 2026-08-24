@@ -529,12 +529,14 @@ export const userlogin = async (req,res) => {
     process.env.JWT_SECRET, 
   
     )
+
+    req.session.token = token
       
-      res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            maxAge: 24 * 60 * 60 * 1000
-      });
+    //   res.cookie("token", token, {
+    //         httpOnly: true,
+    //         secure: false,
+    //         maxAge: 24 * 60 * 60 * 1000
+    //   });
 
       return res.status(201).json({
         success: true,
@@ -554,9 +556,21 @@ export const userlogin = async (req,res) => {
 
 
 
-export const logout = async (req,res) => {
-      res.clearCookie("token")
-      return res.status(200).json({message: "user logged out successfully"})
+export const logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({
+                success: false,
+                message: "Logout failed"
+            });
+        }
+
+        res.clearCookie("connect.sid");
+        return res.status(200).json({
+            success: true,
+            message: "User logged out successfully"
+        });
+    });
 }
 
 
