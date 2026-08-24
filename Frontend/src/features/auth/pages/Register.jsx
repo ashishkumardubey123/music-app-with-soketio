@@ -4,28 +4,31 @@ import { Link } from "react-router";
 
 function OrbitMark() {
   return (
-    <div className="relative h-8 w-8 shrink-0">
+    <div className="relative h-9 w-9 shrink-0">
       <style>{`
-        @keyframes orbitSpinA { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes orbitSpinB { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-        .orbit-a { animation: orbitSpinA 16s linear infinite; transform-origin: 50% 50%; }
-        .orbit-b { animation: orbitSpinB 22s linear infinite; transform-origin: 50% 50%; }
-        .orbit-c { animation: orbitSpinA 28s linear infinite; transform-origin: 50% 50%; }
+        @keyframes electronOrbitA { to { transform: rotate(360deg); } }
+        @keyframes electronOrbitB { to { transform: rotate(-360deg); } }
+        @keyframes nucleusPulse { 0%, 100% { transform: scale(.84); opacity: .7; } 50% { transform: scale(1.15); opacity: 1; } }
+        .electron-a { animation: electronOrbitA 7s linear infinite; transform-origin: 20px 20px; }
+        .electron-b { animation: electronOrbitB 10s linear infinite; transform-origin: 20px 20px; }
+        .electron-c { animation: electronOrbitA 13s linear infinite; transform-origin: 20px 20px; }
+        .nucleus-pulse { animation: nucleusPulse 2.4s ease-in-out infinite; transform-origin: 20px 20px; }
         @media (prefers-reduced-motion: reduce) {
-          .orbit-a, .orbit-b, .orbit-c { animation: none; }
+          .electron-a, .electron-b, .electron-c, .nucleus-pulse { animation: none; }
         }
       `}</style>
       <svg viewBox="0 0 40 40" className="h-full w-full">
-        <circle cx="20" cy="20" r="2.2" className="fill-amber-400" />
-        <g className="orbit-a text-teal-400">
-          <ellipse cx="20" cy="20" rx="17" ry="8.5" fill="none" stroke="currentColor" strokeWidth="1.2" strokeDasharray="26 60" transform="rotate(18 20 20)" />
+        <circle cx="20" cy="20" r="18" fill="#1a1512" stroke="#573824" strokeWidth="1" />
+        <g fill="none" stroke="#9a5b32" strokeWidth=".7">
+          <circle cx="20" cy="20" r="6.5" />
+          <circle cx="20" cy="20" r="10.5" />
+          <circle cx="20" cy="20" r="15" />
         </g>
-        <g className="orbit-b text-amber-400/60">
-          <ellipse cx="20" cy="20" rx="17" ry="8.5" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="18 74" transform="rotate(-40 20 20)" />
-        </g>
-        <g className="orbit-c text-white/30">
-          <ellipse cx="20" cy="20" rx="17" ry="8.5" fill="none" stroke="currentColor" strokeWidth="0.8" strokeDasharray="10 84" transform="rotate(70 20 20)" />
-        </g>
+        <g className="electron-a"><circle cx="20" cy="13.5" r="1.5" fill="#fb923c" /><circle cx="20" cy="26.5" r="1.15" fill="#fdba74" /></g>
+        <g className="electron-b"><circle cx="20" cy="9.5" r="1.25" fill="#f97316" /><circle cx="20" cy="30.5" r="1.55" fill="#fb923c" /></g>
+        <g className="electron-c"><circle cx="20" cy="5" r="1.1" fill="#fdba74" /><circle cx="20" cy="35" r="1.3" fill="#f97316" /></g>
+        <circle className="nucleus-pulse" cx="20" cy="20" r="5" fill="#f97316" fillOpacity=".22" />
+        <circle cx="20" cy="20" r="2.6" fill="#f97316" /><circle cx="19.2" cy="19.2" r=".8" fill="#fff7ed" />
       </svg>
     </div>
   );
@@ -37,7 +40,7 @@ function Logo() {
       <OrbitMark />
       <div className="flex items-baseline gap-1.5">
         <span className="font-serif text-xl tracking-tight text-white">Perplexity</span>
-        <span className="text-xs font-semibold uppercase tracking-widest text-amber-400">AI</span>
+        <span className="text-xs font-semibold uppercase tracking-widest text-orange-500">AI</span>
       </div>
     </div>
   );
@@ -56,7 +59,7 @@ function Field({ icon: Icon, label, type = "text", placeholder, name, autoComple
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-11 pr-11 text-sm text-white placeholder-neutral-600 outline-none transition-colors focus:border-teal-400"
+          className="w-full rounded-lg border border-[#4a3427] bg-[#11100e] py-3 pl-11 pr-11 text-sm text-stone-100 placeholder-neutral-600 outline-none transition-colors focus:border-orange-500"
         />
         {toggle && (
           <button
@@ -92,9 +95,7 @@ export default function Register() {
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-neutral-950 text-white">
-      <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-teal-500/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-amber-400/20 blur-3xl" />
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#11100f] text-stone-100">
 
       <div className="relative mx-auto grid min-h-screen w-full max-w-7xl grid-cols-1 md:grid-cols-2">
         {/* Hero */}
@@ -122,8 +123,8 @@ export default function Register() {
               <Logo />
             </div>
 
-            <div className="rounded-3xl border border-white/10 bg-neutral-900/60 p-8 backdrop-blur-xl sm:p-9">
-              <h2 className="font-serif text-2xl text-white">Create an account</h2>
+            <div className="rounded-2xl border border-[#4a3427] bg-[#1a1714] p-8 sm:p-9">
+              <h2 className="font-serif text-2xl text-stone-100">Create an account</h2>
               <p className="mb-7 mt-1.5 text-sm text-neutral-400">Just a few details to get you started.</p>
 
               <div className="space-y-5">
@@ -167,7 +168,7 @@ export default function Register() {
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-amber-400 py-3 text-sm font-semibold text-neutral-950 transition-opacity hover:opacity-90"
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-500 py-3 text-sm font-semibold text-[#21130d] transition-colors hover:bg-orange-400"
               >
                 Create account
                 <ArrowRight size={16} />
@@ -176,7 +177,7 @@ export default function Register() {
               <p className="mt-6 text-center text-sm text-neutral-400">
                   Already have an account?{" "}
                       
-              <Link to="/login" className="font-medium text-white transition-colors hover:text-teal-300"> Login</Link>
+              <Link to="/login" className="font-medium text-stone-100 transition-colors hover:text-orange-400"> Login</Link>
         
           </p>
             </div>

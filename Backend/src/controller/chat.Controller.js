@@ -4,8 +4,7 @@ import messageModel from "../model/message.model.js";
 export async function sendMessage(req, res) {
   let { message, chatId } = req.body;
 
-  let chat = null,
-    titlerespose = null;
+  let chat = null, titlerespose = null;
 
   if (!chatId) {
     titlerespose = await GenerateChatTitle(message);
@@ -19,7 +18,7 @@ export async function sendMessage(req, res) {
   }
 
   const userMessage = await messageModel.create({
-    chatId: chatId || chat._id,
+    chatId: chatId ,
     content: message,
     role: "user",
   });
@@ -29,7 +28,7 @@ export async function sendMessage(req, res) {
   const messagerespose = await GenerateResponse(allMessages);
 
   const Aimessage = await messageModel.create({
-    chatId: chatId || chat._id,
+    chatId: chatId ,
     content: messagerespose,
     role: "ai",
   });
